@@ -55,9 +55,11 @@ export default function useHandleOnMessage() {
       const letter = getNoteLetter(position % 12);
       const type = getMIDICommand(command);
 
-      if (type === COMMANDS.NOTE_ON)
+      if (type === COMMANDS.NOTE_ON) {
         noteOn({ position, octave, letter, velocity });
-      if (type === COMMANDS.NOTE_OFF) noteOff({ position });
+      } else if (type === COMMANDS.NOTE_OFF || (type === COMMANDS.NOTE_ON && velocity === 0)) {
+        noteOff({ position });
+      }
 
       return setEvent({ position, octave, letter, type, event });
     },

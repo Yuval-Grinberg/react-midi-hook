@@ -17,7 +17,7 @@ describe('useHandleOnMessage', () => {
   });
 
   describe('noteOff', () => {
-    it('removes the note from the state when pressed', () => {
+    it('removes the note from the state when released (`off` message)', () => {
       const { result } = renderHook(() => useHandleOnMessage());
 
       act(() => {
@@ -27,6 +27,23 @@ describe('useHandleOnMessage', () => {
 
         result.current.onMessage({
           data: [128, 22, 0]
+        });
+      });
+
+      expect(result.current.pressedKeys).toMatchSnapshot();
+    });
+
+    
+    it('removes the note from the state when released (`velocity === 0` message)', () => {
+      const { result } = renderHook(() => useHandleOnMessage());
+
+      act(() => {
+        result.current.onMessage({
+          data: [144, 22, 100]
+        });
+
+        result.current.onMessage({
+          data: [144, 22, 0]
         });
       });
 
